@@ -95,4 +95,4 @@ GET http://localhost:8080/lyrics?keyword=香水有毒
 本项目遵循 GPL-3.0 开源协议。欢迎提交 Issue 或 PR 帮助改进项目。
 
 *   Original Author: [HisAtri](https://github.com/HisAtri)
-*   BetterLrcApi Developer: [Your Name/Antigravity]
+*   BetterLrcApi Developer: [steely/Antigravity]
