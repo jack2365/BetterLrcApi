@@ -37,13 +37,21 @@ docker run -d \
   steelydk/betterlrcapi:latest
 ```
 
-### 鉴权说明 (Auth)
+### 鉴权说明 (Auth & Cookie)
 
+#### 1. API 鉴权 (API_AUTH)
 为了防止接口被滥用，您可以设置环境变量 `API_AUTH` 来启用鉴权。
+*   启动时添加 `-e API_AUTH=your_secret_key`。
+*   调用时 Header 添加 `Authorization: your_secret_key`。
 
-*   **启用方式**: 启动时添加 `-e API_AUTH=your_secret_key`。
-*   **调用方式**: 在请求 Header 中添加 `Authorization` 或 `Authentication` 字段，值为您设置的 key。
-*   **失败响应**: 如果 Key 不匹配或未提供，将返回 `403 Forbidden`。
+#### 2. 网易云 Cookie (NETEASE_COOKIE)
+**如果您在云服务器（GitHub Codespaces, VPS）上部署遇到歌词 404**，通常是因为 IP 被网易云限制。
+*   **解决方案**: 设置 `NETEASE_COOKIE` 环境变量。
+*   **获取方法**: 在浏览器登录网易云及其，F12 控制台输入 `document.cookie` 复制即可。
+*   **启动示例**:
+    ```bash
+    docker run -d ... -e NETEASE_COOKIE="MUSIC_U=..." ...
+    ```
 
 ### Python 源码运行
 

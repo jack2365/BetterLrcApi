@@ -1,4 +1,5 @@
 import aiohttp
+import os
 from active_cache import async_cache
 
 # Simplified Netease Search API
@@ -25,10 +26,12 @@ async def search_lyric(keyword: str):
                 'limit': 1
             }
             # Headers to mimic a browser/client to avoid some blocks
+            cookie = os.getenv("NETEASE_COOKIE", "")
             headers = {
                 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0',
                 'origin': 'https://music.163.com',
                 'referer': 'https://music.163.com',
+                'cookie': cookie
             }
             
             print(f"Searching lyrics for: {keyword}")
