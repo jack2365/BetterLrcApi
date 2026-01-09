@@ -17,15 +17,30 @@
 ### Docker 部署 (推荐)
 
 ```bash
-# 拉取镜像 (假设已推送)
-docker pull yourusername/betterlrcapi:latest
+# 拉取镜像
+docker pull steelydk/betterlrcapi:latest
 
-# 启动容器
+# 启动容器 (无鉴权)
 docker run -d \
   -p 8080:8080 \
   --name betterlrcapi \
-  yourusername/betterlrcapi:latest
+  steelydk/betterlrcapi:latest
+  
+# 启动容器 (带鉴权 - 推荐)
+docker run -d \
+  -p 8080:8080 \
+  --name betterlrcapi \
+  -e API_AUTH="your_secret_key" \
+  steelydk/betterlrcapi:latest
 ```
+
+### 鉴权说明 (Auth)
+
+为了防止接口被滥用，您可以设置环境变量 `API_AUTH` 来启用鉴权。
+
+*   **启用方式**: 启动时添加 `-e API_AUTH=your_secret_key`。
+*   **调用方式**: 在请求 Header 中添加 `Authorization` 或 `Authentication` 字段，值为您设置的 key。
+*   **失败响应**: 如果 Key 不匹配或未提供，将返回 `403 Forbidden`。
 
 ### Python 源码运行
 
@@ -36,7 +51,11 @@ docker run -d \
     ```
 3.  启动服务:
     ```bash
+    # 无鉴权
     python3 -m uvicorn main:app --host 0.0.0.0 --port 8080
+    
+    # 带鉴权
+    API_AUTH=your_secret_key python3 -m uvicorn main:app --host 0.0.0.0 --port 8080
     ```
 
 ## 📚 API 文档
