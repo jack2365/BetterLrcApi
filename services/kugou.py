@@ -103,8 +103,12 @@ class KugouProvider:
                 except json.JSONDecodeError:
                     logger.error(f"[Kugou] Download JSON decode error. Content type: {resp.content_type}, Text: {text_content[:100]}")
                     return None
+                
+                if data is None:
+                    logger.error(f"[Kugou] Download returned NULL JSON. Text: {text_content[:100]}")
+                    return None
 
-                if data.get('status') == 200 and data.get('content'):
+                if isinstance(data, dict) and data.get('status') == 200 and data.get('content'):
                     decoded_content = base64.b64decode(data['content']).decode('utf-8')
                     return decoded_content
                 else:

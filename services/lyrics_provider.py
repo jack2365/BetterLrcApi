@@ -58,7 +58,13 @@ async def _search_netease(session, keyword: str):
         async with session.get(NETEASE_LYRIC_URL, params=lyric_params, headers=headers) as lyric_resp:
             if lyric_resp.status != 200:
                 return None
-            lyric_data = await lyric_resp.json(content_type=None)
+            try:
+                lyric_data = await lyric_resp.json(content_type=None)
+            except:
+                return None
+
+            if not isinstance(lyric_data, dict):
+                return None
             
             lrc = lyric_data.get('lrc', {}).get('lyric')
             return lrc
