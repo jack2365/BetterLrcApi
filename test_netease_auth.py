@@ -3,12 +3,18 @@ import asyncio
 import os
 import sys
 
-# Usage: NETEASE_COOKIE="xxx" python3 test_netease_auth.py
+# Usage: python3 test_netease_auth.py
 async def test_netease():
     cookie = os.getenv("NETEASE_COOKIE")
     if not cookie:
-        print("❌ Error: Please set NETEASE_COOKIE environment variable.")
-        print("Example: export NETEASE_COOKIE='MUSIC_U=...'; python3 test_netease_auth.py")
+        # Try reading from cookie.txt
+        if os.path.exists("cookie.txt"):
+            with open("cookie.txt", "r") as f:
+                cookie = f.read().strip()
+                print("🍪 Loaded cookie from cookie.txt")
+    
+    if not cookie:
+        print("❌ Error: Please set NETEASE_COOKIE env or create cookie.txt")
         return
 
     print(f"🔒 Testing with Cookie length: {len(cookie)}")
