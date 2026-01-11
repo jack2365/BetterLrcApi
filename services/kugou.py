@@ -95,11 +95,21 @@ class KugouProvider:
         }
         try:
             async with session.get(cls.DOWNLOAD_API, params=params) as resp:
-                # API returns JSON with 'content' in base64
-                data = await resp.json(content_type=None)
+                text_content = await resp.text()
+                # logger.debug(f"[Kugou] Download response: {text_content[:200]}")
+                
+                try:
+                    data = json.loads(text_content)
+                except json.JSONDecodeError:
+                    logger.error(f"[Kugou] Download JSON decode error. Content type: {resp.content_type}, Text: {text_content[:100]}")
+                    return None
+
                 if data.get('status') == 200 and data.get('content'):
                     decoded_content = base64.b64decode(data['content']).decode('utf-8')
                     return decoded_content
+                else:
+                    logger.error(f"[Kugou] Download status failed: {data}")
         except Exception as e:
             logger.error(f"[Kugou] Download error: {e}")
         return None
+

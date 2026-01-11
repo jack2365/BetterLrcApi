@@ -32,10 +32,14 @@ async def _search_netease(session, keyword: str):
         async with session.post(NETEASE_SEARCH_URL, data=params, headers=headers) as resp:
             if resp.status != 200:
                 return None
-            data = await resp.json(content_type=None)
+            try:
+                data = await resp.json(content_type=None)
+            except:
+                return None
             
             if not isinstance(data, dict):
                 return None
+
 
             songs = data.get('result', {}).get('songs', [])
             if not songs:
