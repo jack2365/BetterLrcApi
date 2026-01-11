@@ -73,28 +73,41 @@ async def _search_netease(session, keyword: str):
         logger.error(f"Netease Error: {e}")
         return None
 
+from services.kugou import KugouProvider
+from services.qq import QQProvider
+
+# ...
+
 @async_cache
 async def search_lyric(keyword: str):
     """
-    Aggragator: Netease -> Kugou
+    Aggragator: Netease -> Kugou -> QQ
     """
     if not keyword:
         return None
 
-    # Netease First
+    # 1. Netease First
     async with aiohttp.ClientSession() as session:
         lrc = await _search_netease(session, keyword)
         if lrc:
             return lrc
     
-    # Kugou Fallback
+    # 2. Kugou Fallback
     print(f"Netease failed, trying Kugou for: {keyword}")
     try:
         lrc = await KugouProvider.get_lyrics(keyword)
-        print(f"Kugou Result: {lrc[:50] if lrc else 'None'}")
         if lrc:
             return lrc
     except Exception as e:
         print(f"Kugou Provider Error: {e}")
+
+    # 3. QQ Fallback
+    print(f"Kugou failed, trying QQ for: {keyword}")
+    try:
+        lrc = await QQProvider.get_lyrics(keyword)
+        if lrc:
+            return lrc
+    except Exception as e:
+        print(f"QQ Provider Error: {e}")
 
     return "[00:00.00] No lyric found"
