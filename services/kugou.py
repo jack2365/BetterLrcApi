@@ -3,7 +3,10 @@ import json
 import base64
 import logging
 
+# Configure basic logging to stdout
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 
 class KugouProvider:
     SEARCH_API = "http://mobilecdn.kugou.com/api/v3/search/song"

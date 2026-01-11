@@ -79,8 +79,12 @@ async def search_lyric(keyword: str):
     
     # Kugou Fallback
     print(f"Netease failed, trying Kugou for: {keyword}")
-    lrc = await KugouProvider.get_lyrics(keyword)
-    if lrc:
-        return lrc
+    try:
+        lrc = await KugouProvider.get_lyrics(keyword)
+        print(f"Kugou Result: {lrc[:50] if lrc else 'None'}")
+        if lrc:
+            return lrc
+    except Exception as e:
+        print(f"Kugou Provider Error: {e}")
 
     return "[00:00.00] No lyric found"
