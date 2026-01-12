@@ -6,12 +6,25 @@ router = APIRouter()
 
 @router.get("/lyrics")
 async def get_lyrics(
-    keyword: str = Query(..., description="Song name and artist"),
+    keyword: str = Query(None, description="Song name and artist"),
+    title: str = Query(None, description="Song title"),
+    artist: str = Query(None, description="Artist name"),
     format: str = Query("text", description="Response format: 'text' or 'json'")
 ):
     """
-    Get lyrics for a song.
+    Get lyrics for a song. Supports 'keyword' OR 'title'+'artist'.
     """
+    # Construct search keyword if not provided directly
+    if not keyword:
+        parts = []
+        if artist: parts.append(artist)
+        if title: parts.append(title)
+        if parts:
+            keyword = " ".join(parts)
+        else:
+             return JSONResponse(status_code=400, content={"error": "Missing parameters. Provide 'keyword' or 'title'/'artist'."})
+
+
     lrc_content = await search_lyric(keyword)
     
     if not lrc_content:
