@@ -22,12 +22,19 @@ async def _search_netease(session, keyword: str):
         }
         # Headers to mimic a browser/client to avoid some blocks
         cookie = os.getenv("NETEASE_COOKIE", "")
-        if not cookie and os.path.exists("cookie.txt"):
-            try:
-                with open("cookie.txt", "r") as f:
-                    cookie = f.read().strip()
-            except Exception as e:
-                logger.warning(f"Failed to read cookie.txt: {e}")
+        
+        # Check local file or volume mapped file
+        cookie_files = ["cookie.txt", "/data/cookie.txt", "/app/data/cookie.txt"]
+        if not cookie:
+            for c_file in cookie_files:
+                if os.path.exists(c_file):
+                    try:
+                        with open(c_file, "r") as f:
+                            cookie = f.read().strip()
+                            logger.info(f"Loaded cookie from {c_file}")
+                        break
+                    except Exception as e:
+                        logger.warning(f"Failed to read {c_file}: {e}")
 
         headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36 Edg/129.0.0.0',
