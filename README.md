@@ -1,35 +1,37 @@
 # BetterLrcApi
 
-**BetterLrcApi** 是基于 [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi) 项目的重构升级版本。我们保留了原项目的核心理念，并针对封面质量和性能进行了大幅优化。
+[English](README.md) | [中文](README_zh-CN.md)
 
-特别感谢原作者 [HisAtri](https://github.com/HisAtri) 的开源贡献。
+**BetterLrcApi** is a refactored and upgraded version based on the [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi) project. We preserved the core philosophy of the original project while significantly optimizing cover art quality and performance.
 
-## ✨ 主要特性
+Special thanks to the original author [HisAtri](https://github.com/HisAtri) for their open-source contribution.
 
-*   **高清封面 (New)**: 接入 **Apple Music (iTunes Search API)**，提供高达 **3000x3000** 分辨率的官方正版专辑封面，彻底解决封面模糊或不匹配的问题。
-*   **多源歌词**: 
-    *   **Netease (网易云)**: 默认源，精准度高 (云端部署建议配置 Cookie)。
-    *   **Kugou (酷狗)**: 自动备选源 (支持 PC/App 双接口 fallback)。
-    *   **QQ Music (QQ音乐)**: **新** 三级备选源，无需 Cookie，极高可用性。
-*   **高性能架构**: 从 Flask 迁移至 **FastAPI**，完全支持异步 (Async/Await) 并发，响应速度大幅提升。
+## ✨ Key Features
 
-## 🚀 快速开始
+*   **High-Res Covers (New)**: Integrated with **Apple Music (iTunes Search API)** to provide official album art up to **3000x3000** resolution, resolving blurry or mismatched cover issues.
+*   **Multi-Source Lyrics**:
+    *   **Netease**: Default source, high accuracy (Cookie configuration recommended for cloud deployment).
+    *   **Kugou**: Automatic fallback source (Supports PC/App dual-interface fallback).
+    *   **QQ Music**: **New** tertiary fallback source, cookie-free, ensuring high availability.
+*   **High-Performance Architecture**: Migrated from Flask to **FastAPI**, fully supporting Async/Await concurrency for significantly improved response speed.
 
-### Docker 部署 (推荐)
+## 🚀 Quick Start
 
-> 支持架构: `linux/amd64`, `linux/arm64`
+### Docker Deployment (Recommended)
+
+> Supported Architectures: `linux/amd64`, `linux/arm64`
 
 ```bash
-# 拉取镜像
+# Pull image
 docker pull steelydk/betterlrcapi:latest
 
-# 启动容器 (无鉴权)
+# Start container (No Auth)
 docker run -d \
   -p 8080:8080 \
   --name betterlrcapi \
   steelydk/betterlrcapi:latest
   
-# 启动容器 (带鉴权 - 推荐)
+# Start container (With Auth - Recommended)
 docker run -d \
   -p 8080:8080 \
   --name betterlrcapi \
@@ -37,91 +39,90 @@ docker run -d \
   steelydk/betterlrcapi:latest
 ```
 
-### 鉴权说明 (Auth & Cookie)
+### Authentication & Configuration
 
-#### 1. API 鉴权 (API_AUTH)
-为了防止接口被滥用，您可以设置环境变量 `API_AUTH` 来启用鉴权。
-*   启动时添加 `-e API_AUTH=your_secret_key`。
-*   调用时 Header 添加 `Authorization: your_secret_key`。
+#### 1. API Authentication (API_AUTH)
+To prevent API abuse, you can set the `API_AUTH` environment variable.
+*   Add `-e API_AUTH=your_secret_key` at startup.
+*   Add `Authorization: your_secret_key` header when making requests.
 
-#### 2. 网易云 Cookie (NETEASE_COOKIE)
-**如果您在云服务器（GitHub Codespaces, VPS）上部署遇到歌词 404**，通常是因为 IP 被网易云限制。
-*   **解决方案**: 设置 `NETEASE_COOKIE` 环境变量。
-*   **获取方法**: 在浏览器登录网易云及其，F12 控制台输入 `document.cookie` 复制即可。
-*   **启动示例**:
+#### 2. Netease Cookie (NETEASE_COOKIE)
+**If you encounter 404 errors for lyrics when deploying on cloud servers (GitHub Codespaces, VPS)**, it is usually because the IP is restricted by Netease.
+*   **Solution**: Set the `NETEASE_COOKIE` environment variable.
+*   **How to get**: Log in to Netease Cloud Music in your browser, open the F12 console, type `document.cookie` and copy it.
+*   **Example**:
     ```bash
     docker run -d ... -e NETEASE_COOKIE="MUSIC_U=..." ...
     ```
 
-### Python 源码运行
+### Running from Source (Python)
 
-1.  克隆或下载本项目
-2.  安装依赖:
+1.  Clone or download this project.
+2.  Install dependencies:
     ```bash
     pip install -r requirements.txt
     ```
-3.  启动服务:
+3.  Start the service:
     ```bash
-    # 无鉴权
+    # No Auth
     python3 -m uvicorn main:app --host 0.0.0.0 --port 8080
     
-    # 带鉴权
+    # With Auth
     API_AUTH=your_secret_key python3 -m uvicorn main:app --host 0.0.0.0 --port 8080
     ```
 
-## 📚 API 文档
+## 📚 API Documentation
 
-## 📚 API 文档
-### 1. 获取封面 `/cover`
+### 1. Get Cover `/cover`
 
-获取 Apple Music 高清封面。
+Get high-quality cover art from Apple Music.
 
 *   **URL**: `/cover`
-*   **Method**: `GET` 或 `POST`
-*   **参数**:
-    *   `keyword`: 歌曲名和歌手名 (推荐)
-    *   `title` + `artist`: 歌曲名和歌手名 (兼容模式，会自动合并搜索)
-    *   `format`: `redirect` (默认，直接跳转图片) 或 `json` (返回 JSON 数据)
+*   **Method**: `GET` or `POST`
+*   **Parameters**:
+    *   `keyword`: Song name and artist (Recommended)
+    *   `title` + `artist`: Song title and artist name (Compatibility mode, automatically combined for search)
+    *   `format`: `redirect` (Default, redirects to image) or `json` (Returns JSON data)
 
-**示例**:
+**Example**:
 ```bash
-# 方式 1: 关键字搜索 (推荐)
-GET /cover?keyword=香水有毒
+# Method 1: Keyword Search (Recommended)
+GET /cover?keyword=Thinking Out Loud
 
-# 方式 2: 拆分参数 (兼容 Audio Station 等 APP)
+# Method 2: Split Parameters (Compatible with Audio Station, etc.)
 GET /cover?title=Thinking Out Loud&artist=Ed Sheeran
 ```
 
-### 2. 获取歌词 `/lyrics`
+### 2. Get Lyrics `/lyrics`
 
-获取 LRC 格式歌词。
+Get lyrics in LRC format.
 
 *   **URL**: `/lyrics`
-*   **Method**: `GET` 或 `POST`
-*   **参数**:
-    *   `keyword`: 歌曲名和歌手名
-    *   `title` + `artist`: 歌曲名和歌手名 (兼容模式)
-    *   `format`: `text` (默认，返回纯文本) 或 `json`
+*   **Method**: `GET` or `POST`
+*   **Parameters**:
+    *   `keyword`: Song name and artist
+    *   `title` + `artist`: Song title and artist name (Compatibility mode)
+    *   `format`: `text` (Default, returns plain text) or `json`
 
-**示例**:
+**Example**:
 ```bash
-# 方式 1: 关键字
-GET /lyrics?keyword=香水有毒
+# Method 1: Keyword
+GET /lyrics?keyword=Thinking Out Loud
 
-# 方式 2: 拆分参数
+# Method 2: Split Parameters
 GET /lyrics?title=Thinking Out Loud&artist=Ed Sheeran
 ```
 
-### 📱 兼容性 (Compatibility)
+### 📱 Compatibility
 
-完美适配以下 APP 的 API 格式：
+Perfectly adapted for the following App API formats:
 *   **Format 1**: `<url>?title=<title>&artist=<artist>`
-*   **Format 2**: `<url>/<artist>/<title>` (APP 会自动转换参数)
-*   **Synology Audio Station**: 原生支持其默认的 POST 请求方式。
+*   **Format 2**: `<url>/<artist>/<title>` (Apps automatically convert parameters)
+*   **Synology Audio Station**: Native support for its default POST request method.
 
-## 📝 开发与贡献
+## 📝 Development & Contribution
 
-本项目遵循 GPL-3.0 开源协议。欢迎提交 Issue 或 PR 帮助改进项目。
+This project is licensed under the GPL-3.0 License. Issues and PRs are welcome.
 
 *   Original Author: [HisAtri](https://github.com/HisAtri)
 *   BetterLrcApi Developer: [steely/Antigravity]
