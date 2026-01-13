@@ -5,6 +5,7 @@ from services.lyrics_provider import search_lyric
 router = APIRouter()
 
 @router.get("/lyrics")
+@router.post("/lyrics")
 async def get_lyrics(
     keyword: str = Query(None, description="Song name and artist"),
     title: str = Query(None, description="Song title"),

@@ -5,6 +5,7 @@ from services.apple_music import search_apple_cover
 router = APIRouter()
 
 @router.get("/cover")
+@router.post("/cover")
 async def get_cover(
     keyword: str = Query(None, description="Song name and artist"),
     title: str = Query(None, description="Song title"),
