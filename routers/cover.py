@@ -6,12 +6,24 @@ router = APIRouter()
 
 @router.get("/cover")
 async def get_cover(
-    keyword: str = Query(..., description="Song name and artist"),
+    keyword: str = Query(None, description="Song name and artist"),
+    title: str = Query(None, description="Song title"),
+    artist: str = Query(None, description="Artist name"),
     format: str = Query("redirect", description="Response format: 'redirect' or 'json'")
 ):
     """
-    Get high-quality cover art from Apple Music.
+    Get high-quality cover art from Apple Music. Supports 'keyword' OR 'title'+'artist'.
     """
+    # Construct search keyword if not provided directly
+    if not keyword:
+        parts = []
+        if artist: parts.append(artist)
+        if title: parts.append(title)
+        if parts:
+            keyword = " ".join(parts)
+        else:
+             return JSONResponse(status_code=400, content={"error": "Missing parameters. Provide 'keyword' or 'title'/'artist'."})
+
     cover_url = await search_apple_cover(keyword)
     
     if not cover_url:
