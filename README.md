@@ -71,35 +71,53 @@ docker run -d \
 
 ## 📚 API 文档
 
-### 1. 获取封面 /cover
+## 📚 API 文档
+### 1. 获取封面 `/cover`
 
 获取 Apple Music 高清封面。
 
 *   **URL**: `/cover`
-*   **Method**: `GET`
+*   **Method**: `GET` 或 `POST`
 *   **参数**:
-    *   `keyword`: 歌曲名和歌手名 (例如: `香水有毒`, `Taylor Swift Love Story`)
+    *   `keyword`: 歌曲名和歌手名 (推荐)
+    *   `title` + `artist`: 歌曲名和歌手名 (兼容模式，会自动合并搜索)
     *   `format`: `redirect` (默认，直接跳转图片) 或 `json` (返回 JSON 数据)
 
 **示例**:
-```
-GET http://localhost:8080/cover?keyword=香水有毒
+```bash
+# 方式 1: 关键字搜索 (推荐)
+GET /cover?keyword=香水有毒
+
+# 方式 2: 拆分参数 (兼容 Audio Station 等 APP)
+GET /cover?title=Thinking Out Loud&artist=Ed Sheeran
 ```
 
-### 2. 获取歌词 /lyrics
+### 2. 获取歌词 `/lyrics`
 
 获取 LRC 格式歌词。
 
 *   **URL**: `/lyrics`
-*   **Method**: `GET`
+*   **Method**: `GET` 或 `POST`
 *   **参数**:
     *   `keyword`: 歌曲名和歌手名
+    *   `title` + `artist`: 歌曲名和歌手名 (兼容模式)
     *   `format`: `text` (默认，返回纯文本) 或 `json`
 
 **示例**:
+```bash
+# 方式 1: 关键字
+GET /lyrics?keyword=香水有毒
+
+# 方式 2: 拆分参数
+GET /lyrics?title=Thinking Out Loud&artist=Ed Sheeran
 ```
-GET http://localhost:8080/lyrics?keyword=香水有毒
-```
+
+### 📱 兼容性 (Compatibility)
+
+完美适配以下 APP 的 API 格式：
+*   **Format 1**: `<url>?title=<title>&artist=<artist>`
+*   **Format 2**: `<url>/<artist>/<title>` (APP 会自动转换参数)
+*   **Synology Audio Station**: 原生支持其默认的 POST 请求方式。
 
 ## 📝 开发与贡献
 
