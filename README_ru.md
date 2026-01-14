@@ -1,8 +1,8 @@
-# BetterLrcApi
+# MuseMeta
 
 [English](README.md) | [中文](README_zh-CN.md) | [日本語](README_ja.md) | [한국어](README_ko.md) | [Русский](README_ru.md)
 
-**BetterLrcApi** — это переработанная и улучшенная версия проекта [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi). Мы сохранили основную философию оригинального проекта, значительно оптимизировав качество обложек и производительность.
+**MuseMeta** — это переработанная и улучшенная версия проекта [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi). Мы сохранили основную философию оригинального проекта, значительно оптимизировав качество обложек и производительность.
 
 Особая благодарность оригинальному автору [HisAtri](https://github.com/HisAtri) за вклад в открытый исходный код.
 
@@ -23,20 +23,20 @@
 
 ```bash
 # Получение образа
-docker pull steelydk/betterlrcapi:latest
+docker pull steelydk/musemeta:latest
 
 # Запуск контейнера (Без авторизации)
 docker run -d \
   -p 8080:8080 \
-  --name betterlrcapi \
-  steelydk/betterlrcapi:latest
+  --name musemeta \
+  steelydk/musemeta:latest
   
 # Запуск контейнера (С авторизацией - Рекомендуется)
 docker run -d \
   -p 8080:8080 \
-  --name betterlrcapi \
+  --name musemeta \
   -e API_AUTH="your_secret_key" \
-  steelydk/betterlrcapi:latest
+  steelydk/musemeta:latest
 ```
 
 ### Аутентификация и Конфигурация
@@ -125,4 +125,4 @@ GET /lyrics?title=Thinking Out Loud&artist=Ed Sheeran
 Этот проект лицензирован под лицензией GPL-3.0. Приветствуются Issues и PR.
 
 *   Original Author: [HisAtri](https://github.com/HisAtri)
-*   BetterLrcApi Developer: [steely/Antigravity]
+*   MuseMeta Developer: [steely/Antigravity]

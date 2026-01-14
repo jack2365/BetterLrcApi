@@ -9,11 +9,7 @@ echo "Building and Pushing Multi-Arch Image (linux/amd64, linux/arm64)..."
 echo "Target: $IMAGE_NAME"
 
 # Build and push in one step (required for multi-arch manifest)
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -t "$IMAGE_NAME" \
-  --push \
-  .
+docker buildx build --platform linux/amd64,linux/arm64 -t steelydk/musemeta:latest --push .
 
 echo ""
 echo "Build and Push Complete!"

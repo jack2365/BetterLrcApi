@@ -1,8 +1,8 @@
-# BetterLrcApi
+# MuseMeta
 
 [English](README.md) | [中文](README_zh-CN.md) | [日本語](README_ja.md) | [한국어](README_ko.md) | [Русский](README_ru.md)
 
-**BetterLrcApi** is a refactored and upgraded version based on the [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi) project. We preserved the core philosophy of the original project while significantly optimizing cover art quality and performance.
+**MuseMeta** is a refactored and upgraded version based on the [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi) project. We preserved the core philosophy of the original project while significantly optimizing cover art quality and performance.
 
 Special thanks to the original author [HisAtri](https://github.com/HisAtri) for their open-source contribution.
 
@@ -23,20 +23,20 @@ Special thanks to the original author [HisAtri](https://github.com/HisAtri) for 
 
 ```bash
 # Pull image
-docker pull steelydk/betterlrcapi:latest
+docker pull steelydk/musemeta:latest
 
 # Start container (No Auth)
 docker run -d \
   -p 8080:8080 \
-  --name betterlrcapi \
-  steelydk/betterlrcapi:latest
+  --name musemeta \
+  steelydk/musemeta:latest
   
 # Start container (With Auth - Recommended)
 docker run -d \
   -p 8080:8080 \
-  --name betterlrcapi \
+  --name musemeta \
   -e API_AUTH="your_secret_key" \
-  steelydk/betterlrcapi:latest
+  steelydk/musemeta:latest
 ```
 
 ### Authentication & Configuration
@@ -125,4 +125,4 @@ Perfectly adapted for the following App API formats:
 This project is licensed under the GPL-3.0 License. Issues and PRs are welcome.
 
 *   Original Author: [HisAtri](https://github.com/HisAtri)
-*   BetterLrcApi Developer: [steely/Antigravity]
+*   MuseMeta Developer: [steely/Antigravity]

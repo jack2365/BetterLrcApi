@@ -5,8 +5,8 @@ from routers import cover
 from routers import lyrics
 
 app = FastAPI(
-    title="BetterLrcApi",
-    description="An improved Lyrics and Cover API using Apple Music for covers.",
+    title="MuseMeta API",
+    description="High-quality lyrics and cover art provider from multiple sources.",
     version="1.0.0"
 )
 
