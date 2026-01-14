@@ -1,6 +1,6 @@
 # BetterLrcApi
 
-[English](README.md) | [中文](README_zh-CN.md)
+[English](README.md) | [中文](README_zh-CN.md) | [日本語](README_ja.md) | [한국어](README_ko.md) | [Русский](README_ru.md)
 
 **BetterLrcApi** 是基于 [HisAtri/LrcApi](https://github.com/HisAtri/LrcApi) 项目的重构升级版本。我们保留了原项目的核心理念，并针对封面质量和性能进行了大幅优化。
 
