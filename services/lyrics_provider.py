@@ -89,13 +89,14 @@ async def _search_netease(session, keyword: str):
 
 from services.kugou import KugouProvider
 from services.qq import QQProvider
+from services.lrclib import LrclibProvider
 
 # ...
 
 @async_cache
 async def search_lyric(keyword: str):
     """
-    Aggragator: Netease -> Kugou -> QQ
+    Aggragator: Netease -> Lrclib -> Kugou -> QQ
     """
     if not keyword:
         return None
@@ -106,8 +107,17 @@ async def search_lyric(keyword: str):
         if lrc:
             return lrc
     
-    # 2. Kugou Fallback
-    print(f"Netease failed, trying Kugou for: {keyword}")
+    # 2. Lrclib Fallback (New)
+    print(f"Netease failed, trying Lrclib for: {keyword}")
+    try:
+        lrc = await LrclibProvider.get_lyrics(keyword)
+        if lrc:
+            return lrc
+    except Exception as e:
+        print(f"Lrclib Provider Error: {e}")
+
+    # 3. Kugou Fallback
+    print(f"Lrclib failed, trying Kugou for: {keyword}")
     try:
         lrc = await KugouProvider.get_lyrics(keyword)
         if lrc:
@@ -115,7 +125,7 @@ async def search_lyric(keyword: str):
     except Exception as e:
         print(f"Kugou Provider Error: {e}")
 
-    # 3. QQ Fallback
+    # 4. QQ Fallback
     print(f"Kugou failed, trying QQ for: {keyword}")
     try:
         lrc = await QQProvider.get_lyrics(keyword)
