@@ -105,14 +105,14 @@ async def search_lyric(keyword: str):
     async with aiohttp.ClientSession() as session:
         lrc = await _search_netease(session, keyword)
         if lrc:
-            return lrc
+            return lrc, "Netease"
     
     # 2. Lrclib Fallback (New)
     print(f"Netease failed, trying Lrclib for: {keyword}")
     try:
         lrc = await LrclibProvider.get_lyrics(keyword)
         if lrc:
-            return lrc
+            return lrc, "Lrclib"
     except Exception as e:
         print(f"Lrclib Provider Error: {e}")
 
@@ -121,7 +121,7 @@ async def search_lyric(keyword: str):
     try:
         lrc = await KugouProvider.get_lyrics(keyword)
         if lrc:
-            return lrc
+            return lrc, "Kugou"
     except Exception as e:
         print(f"Kugou Provider Error: {e}")
 
@@ -130,8 +130,8 @@ async def search_lyric(keyword: str):
     try:
         lrc = await QQProvider.get_lyrics(keyword)
         if lrc:
-            return lrc
+            return lrc, "QQ"
     except Exception as e:
         print(f"QQ Provider Error: {e}")
 
-    return "[00:00.00] No lyric found"
+    return "[00:00.00] No lyric found", "None"

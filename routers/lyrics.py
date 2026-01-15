@@ -26,12 +26,17 @@ async def get_lyrics(
              return JSONResponse(status_code=400, content={"error": "Missing parameters. Provide 'keyword' or 'title'/'artist'."})
 
 
-    lrc_content = await search_lyric(keyword)
+    # Unpack tuple
+    result = await search_lyric(keyword)
+    if isinstance(result, tuple):
+        lrc_content, source = result
+    else:
+        lrc_content, source = result, "Unknown"
     
     if not lrc_content:
         return JSONResponse(status_code=404, content={"error": "Lyrics not found"})
 
     if format == "json":
-        return {"code": 200, "lyrics": lrc_content}
+        return {"code": 200, "source": source, "lyrics": lrc_content}
     else:
-        return PlainTextResponse(content=lrc_content)
+        return PlainTextResponse(content=lrc_content, headers={"X-Lyric-Source": source})
